@@ -143,18 +143,23 @@
 
     function enviarCodigo(codigo) {
 
-      console.log(
-        "Código:",
-        codigo,
-        "Destino:",
-        destinoActual
-      );
+  var url = "https://script.google.com/macros/s/AKfycbybUjLGJsQVBfQF78lta4z0leChViWBm0XvHosOPyrFJFFCI0lRw33QrakGd178rcA0/exec";
 
-      document.getElementById("resultado").innerHTML =
-        "✅ Código leído: " + codigo +
-        "<br>Destino: " + destinoActual;
-    }
+  var iframe = document.createElement("iframe");
 
+  iframe.style.display = "none";
+
+  iframe.src =
+    url +
+    "?codigo=" + encodeURIComponent(codigo) +
+    "&destino=" + encodeURIComponent(destinoActual);
+
+  document.body.appendChild(iframe);
+
+  document.getElementById("resultado").innerHTML =
+    "✅ Código enviado: " + codigo +
+    "<br>Destino: " + destinoActual;
+}
     function volverMenu() {
 
       if (scanner) {
