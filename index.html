@@ -6,7 +6,7 @@
 
   <title>Escáner de productos</title>
 
-  <script src=""https://unpkg.com/html5-qrcode""></script>
+  <script src="https://unpkg.com/html5-qrcode"></script>
 
   <style>
     body {
@@ -62,23 +62,23 @@
 
   <h1>📷 Escáner de productos</h1>
 
-  <div id=""menu"">
+  <div id="menu">
 
-    <button id=""reposiciones"" onclick=""iniciarEscaner('REPOSICIONES')"">
+    <button id="reposiciones" onclick="iniciarEscaner('REPOSICIONES')">
       📦 REPOSICIONES
     </button>
 
-    <button id=""ventas"" onclick=""iniciarEscaner('VENTAS')"">
+    <button id="ventas" onclick="iniciarEscaner('VENTAS')">
       🛒 VENTAS
     </button>
 
   </div>
 
-  <div id=""reader""></div>
+  <div id="reader"></div>
 
-  <p id=""resultado""></p>
+  <p id="resultado"></p>
 
-  <button id=""volver"" onclick=""volverMenu()"">
+  <button id="volver" onclick="volverMenu()">
     ↩️ Volver
   </button>
 
@@ -93,16 +93,16 @@
       destinoActual = destino;
       escaneando = true;
 
-      document.getElementById(""menu"").style.display = ""none"";
-      document.getElementById(""volver"").style.display = ""block"";
+      document.getElementById("menu").style.display = "none";
+      document.getElementById("volver").style.display = "block";
 
-      document.getElementById(""resultado"").innerHTML =
+      document.getElementById("resultado").innerHTML =
         ""Apunta la cámara al código de barras..."";
 
-      scanner = new Html5Qrcode(""reader"");
+      scanner = new Html5Qrcode("reader");
 
       scanner.start(
-        { facingMode: ""environment"" },
+        { facingMode: "environment" },
         {
           fps: 10,
           qrbox: {
@@ -113,8 +113,8 @@
         codigoLeido
       ).catch(function(error) {
 
-        document.getElementById(""resultado"").innerHTML =
-          ""No se pudo iniciar la cámara."";
+        document.getElementById("resultado").innerHTML =
+          "No se pudo iniciar la cámara.";
 
         console.log(error);
 
@@ -127,8 +127,8 @@
 
       escaneando = false;
 
-      document.getElementById(""resultado"").innerHTML =
-        ""Código leído: "" + codigo;
+      document.getElementById("resultado").innerHTML =
+        "Código leído: " + codigo;
 
       scanner.stop().then(function() {
 
@@ -149,13 +149,13 @@
        */
 
       console.log(
-        ""Código:"",
+        "Código:",
         codigo,
-        ""Destino:"",
+        "Destino:",
         destinoActual
       );
 
-      document.getElementById(""resultado"").innerHTML =
+      document.getElementById("resultado").innerHTML =
         ""✅ Código leído: "" + codigo +
         ""<br>Destino: "" + destinoActual;
     }
@@ -172,11 +172,11 @@
       escaneando = false;
       destinoActual = null;
 
-      document.getElementById(""reader"").innerHTML = """";
-      document.getElementById(""resultado"").innerHTML = """";
+      document.getElementById("reader").innerHTML = "";
+      document.getElementById("resultado").innerHTML = "";
 
-      document.getElementById(""menu"").style.display = ""block"";
-      document.getElementById(""volver"").style.display = ""none"";
+      document.getElementById("menu").style.display = "block";
+      document.getElementById("volver").style.display = "none";
     }
 
   </script>
