@@ -149,8 +149,7 @@
 
   iframe.style.display = "none";
 
-  iframe.src =
-    url +
+  iframe.src = url +
     "?codigo=" + encodeURIComponent(codigo) +
     "&destino=" + encodeURIComponent(destinoActual);
 
@@ -159,22 +158,4 @@
   document.getElementById("resultado").innerHTML =
     "✅ Código enviado: " + codigo +
     "<br>Destino: " + destinoActual;
-}
-    "function volverMenu() {
-
-  if (scanner) {
-
-    scanner.stop().catch(function() {});
-
-  }
-
-  scanner = null;
-  escaneando = false;
-  destinoActual = null;
-
-  document.getElementById("reader").innerHTML = "";
-  document.getElementById("resultado").innerHTML = "";
-
-  document.getElementById("menu").style.display = "block";
-  document.getElementById("volver").style.display = "none";
 }
