@@ -162,24 +162,13 @@
 }
     function volverMenu() {
 
-      if (scanner) {
+  scanner = null;
+  escaneando = false;
+  destinoActual = null;
 
-        scanner.stop().catch(function() {});
+  document.getElementById("reader").innerHTML = "";
+  document.getElementById("resultado").innerHTML = "";
 
-      }
-
-      scanner = null;
-      escaneando = false;
-      destinoActual = null;
-
-      document.getElementById("reader").innerHTML = "";
-      document.getElementById("resultado").innerHTML = "";
-
-      document.getElementById("menu").style.display = "block";
-      document.getElementById("volver").style.display = "none";
-    }
-
-  </script>
-
-</body>
-</html>
+  document.getElementById("menu").style.display = "block";
+  document.getElementById("volver").style.display = "none";
+}
