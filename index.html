@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset=""UTF-8"">
-  <meta name=""viewport"" content=""width=device-width, initial-scale=1"">
+  <meta charset="UTF-8">
+  <meta name="viewport"" content=""width=device-width, initial-scale=1">
 
   <title>Escáner de productos</title>
 
-  <script src="https://unpkg.com/html5-qrcode"></script>
+  <script src=""https://unpkg.com/html5-qrcode""></script>
 
   <style>
     body {
@@ -97,7 +97,7 @@
       document.getElementById("volver").style.display = "block";
 
       document.getElementById("resultado").innerHTML =
-        ""Apunta la cámara al código de barras..."";
+        "Apunta la cámara al código de barras...";
 
       scanner = new Html5Qrcode("reader");
 
@@ -143,11 +143,6 @@
 
     function enviarCodigo(codigo) {
 
-      /*
-       * AQUÍ CONECTAREMOS EL ESCÁNER
-       * CON GOOGLE SHEETS.
-       */
-
       console.log(
         "Código:",
         codigo,
@@ -156,8 +151,8 @@
       );
 
       document.getElementById("resultado").innerHTML =
-        ""✅ Código leído: "" + codigo +
-        ""<br>Destino: "" + destinoActual;
+        "✅ Código leído: " + codigo +
+        "<br>Destino: " + destinoActual;
     }
 
     function volverMenu() {
