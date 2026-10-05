@@ -6,7 +6,7 @@
 
   <title>Escáner de productos</title>
 
-  <script src="https://unpkg.com/html5-qrcode"></script>
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 
   <style>
     body {
@@ -82,11 +82,13 @@
     ↩️ Volver
   </button>
 
+
   <script>
 
     var scanner = null;
-    var destinoActual = null;
+    var destinoActual = "";
     var escaneando = false;
+
 
     function iniciarEscaner(destino) {
 
@@ -97,29 +99,55 @@
       document.getElementById("volver").style.display = "block";
 
       document.getElementById("resultado").innerHTML =
-        "Apunta la cámara al código de barras...";
+        "Solicitando acceso a la cámara...";
+
+      document.getElementById("reader").innerHTML = "";
 
       scanner = new Html5Qrcode("reader");
 
+
       scanner.start(
-        { facingMode: "environment" },
+        {
+          facingMode: "environment"
+        },
         {
           fps: 10,
+
           qrbox: {
             width: 300,
             height: 150
-          }
+          },
+
+          aspectRatio: 1.777778
         },
-        codigoLeido
-      ).catch(function(error) {
+
+        function(codigo) {
+          codigoLeido(codigo);
+        },
+
+        function(error) {
+          // Errores normales mientras busca un código.
+        }
+
+      ).then(function() {
 
         document.getElementById("resultado").innerHTML =
-          "No se pudo iniciar la cámara.";
+          "📷 Apunta la cámara al código de barras...";
 
-        console.log(error);
+      }).catch(function(error) {
+
+        console.log("ERROR CÁMARA:", error);
+
+        escaneando = false;
+
+        document.getElementById("resultado").innerHTML =
+          "❌ No se pudo abrir la cámara.<br><br>" +
+          "Verifica que hayas permitido el acceso a la cámara.";
 
       });
+
     }
+
 
     function codigoLeido(codigo) {
 
@@ -130,32 +158,98 @@
       document.getElementById("resultado").innerHTML =
         "Código leído: " + codigo;
 
-      scanner.stop().then(function() {
+      if (scanner) {
+
+        scanner.stop().then(function() {
+
+          scanner.clear();
+
+          enviarCodigo(codigo);
+
+        }).catch(function() {
+
+          enviarCodigo(codigo);
+
+        });
+
+      } else {
 
         enviarCodigo(codigo);
 
-      }).catch(function() {
+      }
 
-        enviarCodigo(codigo);
-
-      });
     }
+
 
     function enviarCodigo(codigo) {
 
-  var url = "https://script.google.com/macros/s/AKfycbybUjLGJsQVBfQF78lta4z0leChViWBm0XvHosOPyrFJFFCI0lRw33QrakGd178rcA0/exec";
+      var url =
+        "https://script.google.com/macros/s/AKfycbybUjLGJsQVBfQF78lta4z0leChViWBm0XvHosOPyrFJFFCI0lRw33QrakGd178rcA0/exec";
 
-  var iframe = document.createElement("iframe");
 
-  iframe.style.display = "none";
+      var iframe = document.createElement("iframe");
 
-  iframe.src = url +
-    "?codigo=" + encodeURIComponent(codigo) +
-    "&destino=" + encodeURIComponent(destinoActual);
+      iframe.style.display = "none";
 
-  document.body.appendChild(iframe);
+      iframe.src =
+        url +
+        "?codigo=" + encodeURIComponent(codigo) +
+        "&destino=" + encodeURIComponent(destinoActual);
 
-  document.getElementById("resultado").innerHTML =
-    "✅ Código enviado: " + codigo +
-    "<br>Destino: " + destinoActual;
-}
+      document.body.appendChild(iframe);
+
+
+      document.getElementById("resultado").innerHTML =
+        "✅ Código enviado: " + codigo +
+        "<br>Destino: " + destinoActual;
+
+    }
+
+
+    function volverMenu() {
+
+      escaneando = false;
+
+      if (scanner) {
+
+        scanner.stop().then(function() {
+
+          scanner.clear();
+
+          scanner = null;
+
+          mostrarMenu();
+
+        }).catch(function() {
+
+          scanner = null;
+
+          mostrarMenu();
+
+        });
+
+      } else {
+
+        mostrarMenu();
+
+      }
+
+    }
+
+
+    function mostrarMenu() {
+
+      document.getElementById("reader").innerHTML = "";
+
+      document.getElementById("resultado").innerHTML = "";
+
+      document.getElementById("menu").style.display = "block";
+
+      document.getElementById("volver").style.display = "none";
+
+    }
+
+  </script>
+
+</body>
+</html>
