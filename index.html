@@ -143,19 +143,83 @@
 
     function enviarCodigo(codigo) {
 
-  var url = "https://script.google.com/macros/s/AKfycbybUjLGJsQVBfQF78lta4z0leChViWBm0XvHosOPyrFJFFCI0lRw33QrakGd178rcA0/exec";
+      /*
+       * =====================================================
+       * MODO COLEGIO
+       * =====================================================
+       *
+       * Si la página fue abierta desde Colegio,
+       * devuelve el código directamente a esa página.
+       */
 
-  var iframe = document.createElement("iframe");
+      var parametros = new URLSearchParams(window.location.search);
 
-  iframe.style.display = "none";
+      var modo = parametros.get("modo");
+      var retorno = parametros.get("retorno");
 
-  iframe.src = url +
-    "?codigo=" + encodeURIComponent(codigo) +
-    "&destino=" + encodeURIComponent(destinoActual);
+      if (modo === "colegio" && retorno) {
 
-  document.body.appendChild(iframe);
+        var separador =
+          retorno.indexOf("?") >= 0 ? "&" : "?";
 
-  document.getElementById("resultado").innerHTML =
-    "✅ Código enviado: " + codigo +
-    "<br>Destino: " + destinoActual;
-}
+        window.location.href =
+          retorno +
+          separador +
+          "codigo=" + encodeURIComponent(codigo) +
+          "&destino=" + encodeURIComponent(destinoActual);
+
+        return;
+      }
+
+
+      /*
+       * =====================================================
+       * MODO ANTIGUO
+       * =====================================================
+       *
+       * Si no viene desde Colegio, mantiene exactamente
+       * el envío que ya utilizaba tu escáner anterior.
+       */
+
+      var url =
+        "https://script.google.com/macros/s/AKfycbybUjLGJsQVBfQ78lta4z0leChViWBm0XvHosOPyrFJFFCI0lRw33QrakGd178rcA0/exec";
+
+      var iframe = document.createElement("iframe");
+
+      iframe.style.display = "none";
+
+      iframe.src =
+        url +
+        "?codigo=" + encodeURIComponent(codigo) +
+        "&destino=" + encodeURIComponent(destinoActual);
+
+      document.body.appendChild(iframe);
+
+      document.getElementById("resultado").innerHTML =
+        "✅ Código enviado: " + codigo +
+        "<br>Destino: " + destinoActual;
+    }
+
+    function volverMenu() {
+
+      if (scanner && escaneando) {
+
+        scanner.stop().catch(function() {});
+
+      }
+
+      escaneando = false;
+      scanner = null;
+
+      document.getElementById("reader").innerHTML = "";
+
+      document.getElementById("menu").style.display = "block";
+      document.getElementById("volver").style.display = "none";
+
+      document.getElementById("resultado").innerHTML = "";
+    }
+
+  </script>
+
+</body>
+</html>
